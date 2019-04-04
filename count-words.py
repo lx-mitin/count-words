@@ -16,7 +16,7 @@ def count_words(text):
 
 def test_run():
     from datetime import datetime 
-    with open('roadside-picnic-ru.txt','r') as f:
+    with open('./data-txt/roadside-picnic-ru.txt','r') as f:
         t = f.read()
         print('Start counting time: {}'.format(datetime.now()))
         words = count_words(t)
