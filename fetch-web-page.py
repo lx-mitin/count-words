@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from json import dump as json_dump
 from os import getcwd
 from string import punctuation
+from nltk import word_tokenize
 
 # Fetch a web page
 p = requests_get('https://github.com/lx-mitin?tab=repositories&q=&type=public')
@@ -17,13 +18,13 @@ rep_names = [{'rep_name':r.string.strip(),
             for r in rep_tags]
 
 
-# Normalize text
+# Normalize & tokenize text
 translation_dictionaty = {p:' ' for p in punctuation}
 
 for r in rep_names:
     name = r['rep_name'].casefold()
     name = name.translate(name.maketrans(translation_dictionaty))
-    r['rep_name'] = name
+    r['rep_name'] = word_tokenize(name)
 
 with open(getcwd()+'/data/rep-names.json','w') as json_file:
     json_dump(rep_names,json_file)
