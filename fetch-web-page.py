@@ -6,6 +6,7 @@ from os import getcwd
 from string import punctuation
 from nltk import word_tokenize
 from nltk.corpus import stopwords
+from nltk import pos_tag
 
 # Fetch a web page
 p = requests_get('https://github.com/lx-mitin?tab=repositories&q=&type=public')
@@ -14,23 +15,25 @@ p = requests_get('https://github.com/lx-mitin?tab=repositories&q=&type=public')
 # Get a list of repositories
 soup = BeautifulSoup(p.text,'lxml')
 rep_tags = soup.body.find_all('a', itemprop="name codeRepository")
-rep_names = [{'rep_name':r.string.strip(),
+reps = [{'rep_name':r.string.strip(),
               'rep_url':'https://github.com'+r.attrs['href']} 
             for r in rep_tags]
 
 
-# Normalize & tokenize text, remove stop words
+# Normalize & tokenize text, remove stop words, tag parts of speach
 translation_dictionaty = {p:' ' for p in punctuation}
 
-for r in rep_names:
+for r in reps:
     name = r['rep_name'].casefold()
     name = name.translate(name.maketrans(translation_dictionaty))
     words = word_tokenize(name)
-    r['rep_name'] = [w for w in words if w not in stopwords.words('english')]
-    print(r['rep_name'])
-    
+    words = [w for w in words if w not in stopwords.words('english')]
+    r['rep_name'] = pos_tag(words)
+
+rep_names = [r['rep_name'] for r in reps]
+
 with open(getcwd()+'/data/rep-names.json','w') as json_file:
     json_dump(rep_names,json_file)
 
     
-print('Repositories data is loaded to `/data/rep-names.json` file')
+print('Repositories list is loaded to `/data/rep-names.json` file')
