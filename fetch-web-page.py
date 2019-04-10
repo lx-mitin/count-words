@@ -8,6 +8,7 @@ from nltk import word_tokenize
 from nltk.corpus import stopwords
 from nltk import pos_tag
 from nltk import ne_chunk
+from nltk.stem import WordNetLemmatizer
 
 # Fetch a web page
 p = requests_get('https://github.com/lx-mitin?tab=repositories&q=&type=public')
@@ -21,7 +22,9 @@ reps = [{'rep_name':r.string.strip(),
             for r in rep_tags]
 
 
-# Normalize & tokenize text, remove stop words, tag parts of speach, tag named entities
+# Normalize & tokenize text, remove stop words, tag parts of speach,
+# tag named entities, reduce words to their root form
+
 translation_dictionaty = {p:' ' for p in punctuation}
 
 for r in reps:
@@ -30,7 +33,8 @@ for r in reps:
     words = word_tokenize(name)
     words = [w for w in words if w not in stopwords.words('english')]
     structure = pos_tag(words)
-    r['rep_name'] = ne_chunk(structure)
+    structure = ne_chunk(structure)
+    r['rep_name'] = [(WordNetLemmatizer().lemmatize(s[0]),s[1]) for s in structure]
 
 rep_names = [r['rep_name'] for r in reps]
 
