@@ -10,6 +10,18 @@ from nltk import pos_tag
 from nltk import ne_chunk
 from nltk.stem import WordNetLemmatizer
 
+# Define mapping from pos_tag code to lemmatize pos code
+def pos_mapping(source_code='NN'):
+
+    mapping = {'JJ':'a','RB':'r','NN':'n','VB':'v','VBD':'v','VBG':'v'}
+
+    try:
+        target_code = mapping[source_code]
+    except KeyError:
+        target_code = 'n'
+    
+    return target_code
+
 # Fetch a web page
 p = requests_get('https://github.com/lx-mitin?tab=repositories&q=&type=public')
 
@@ -34,7 +46,7 @@ for r in reps:
     words = [w for w in words if w not in stopwords.words('english')]
     structure = pos_tag(words)
     structure = ne_chunk(structure)
-    r['rep_name'] = [(WordNetLemmatizer().lemmatize(s[0]),s[1]) for s in structure]
+    r['rep_name'] = [(WordNetLemmatizer().lemmatize(s[0],pos_mapping(s[1])),s[1]) for s in structure]
 
 rep_names = [r['rep_name'] for r in reps]
 
