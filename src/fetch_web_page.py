@@ -36,7 +36,6 @@ reps = [{'rep_name':r.string.strip(),
 
 # Normalize & tokenize text, remove stop words, tag parts of speach,
 # tag named entities, reduce words to their root form
-
 translation_dictionaty = {p:' ' for p in punctuation}
 
 for r in reps:
@@ -50,8 +49,8 @@ for r in reps:
 
 rep_names = [r['rep_name'] for r in reps]
 
-with open(getcwd()+'/data/rep-names.json','w') as json_file:
+with open(getcwd()+'/data/json/rep-names.json','w') as json_file:
     json_dump(rep_names,json_file)
 
     
-print('Repositories list is loaded to `/data/rep-names.json` file')
+print('Repositories list is loaded to `/data/json/rep-names.json` file')

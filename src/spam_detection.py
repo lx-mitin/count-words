@@ -8,5 +8,5 @@ def read_csv(file_address):
     return df
 
 if __name__ == '__main__':
-    df = read_csv('./data/spam.csv')
+    df = read_csv('./data/csv/spam.csv')
     print(df.head(10))

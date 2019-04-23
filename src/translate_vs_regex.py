@@ -31,7 +31,7 @@ def remove_punctuation_translate(text):
 def translate_vs_regex_compare():
 
     results = []
-    for root, dirs, files in walk('./texts'):
+    for root, dirs, files in walk('./data/txt'):
 
         for filename in files:
 
