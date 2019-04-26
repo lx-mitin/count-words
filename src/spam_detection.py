@@ -9,7 +9,10 @@ def read_csv(file_address):
 
 if __name__ == '__main__':
     df = read_csv('./data/csv/spam.csv')
+
     df = df.drop(df.columns[[2,3,4]],1)
     df = df.rename(columns={'v1':'category','v2':'text'})
+
+    df['category'] = df['category'].map({'ham':0,'spam':1})
 
     print(df.head(10))
