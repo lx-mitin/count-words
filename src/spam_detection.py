@@ -3,7 +3,7 @@ import pandas as pd
 import re
 import nltk
 from nltk.corpus import stopwords
-from collections import defaultdict
+from sklearn.model_selection import train_test_split
 
 
 def read_csv(file_address, names=None, usecols=None, skiprows=0, nrows=None):
@@ -42,7 +42,8 @@ if __name__ == '__main__':
         usecols=[0, 1],
         skiprows=1,
         nrows=5
-    )
+        )
+
 
     # Prepare data for processing
     df['category'] = df['category'].map({'ham': 0, 'spam': 1})
@@ -50,5 +51,18 @@ if __name__ == '__main__':
     df['text'] = df['text'].apply(nltk.word_tokenize)
     df['text'] = df['text'].apply(remove_stop_words)
 
+
+    # Split data into training and testing set
+    split = train_test_split(
+                            df['text'],
+                            df['category'],
+                            test_size=0.3
+                            )
+
+    text_train, text_test, cat_train, cat_test = split
+
     print(df.shape)
     print(df.head())
+
+    print('Training set {}'.format(text_train.shape[0]))
+    print('Testing set {}'.format(text_test.shape[0]))
