@@ -1,7 +1,5 @@
 """ Spam detection """
 import pandas as pd
-import re
-import nltk
 from nltk.corpus import stopwords
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
@@ -18,20 +16,6 @@ def read_csv(file_address, names=None, usecols=None, skiprows=0, nrows=None):
         )
 
     return df
-
-
-def normalize_text(text):
-    t = text.casefold()
-    t = re.sub(r'[^a-zA-Z0-9]',' ',t)
-
-    return t
-
-
-def remove_stop_words(words):
-    stop_words = stopwords.words('english')
-    cleaned_words = [w for w in words if w not in stop_words]
-
-    return cleaned_words
 
 
 if __name__ == '__main__':
@@ -57,10 +41,10 @@ if __name__ == '__main__':
         )
 
     training_words, testing_words, training_cat, testing_cat = split
-    
+
 
     # Extract features (create Bag of Words)
-    count_vector = CountVectorizer(lowercase=True, stop_words=None)
+    count_vector = CountVectorizer(lowercase=True, stop_words=stopwords.words('english'))
     training_set = count_vector.fit_transform(training_words)
     testing_set = count_vector.transform(testing_words)
 
