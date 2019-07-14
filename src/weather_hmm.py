@@ -22,5 +22,12 @@ model.add_transition(rainy_state, sunny_state, 0.4)
 
 model.bake()
 
-print(model.edge_count())
-print(model.node_count())
+
+print('{} states: {}'.format(
+    model.node_count(),
+    [s.name for s in model.states]
+    ))
+print('{} transitions probabilities between states \n{}'.format(
+    model.edge_count(),
+    model.dense_transition_matrix()
+    ))
