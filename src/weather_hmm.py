@@ -1,5 +1,6 @@
 '''weather prediction HMM'''
 from pomegranate import HiddenMarkovModel, DiscreteDistribution, State
+import numpy as np
 
 model = HiddenMarkovModel(name='weather')
 
@@ -22,12 +23,14 @@ model.add_transition(rainy_state, sunny_state, 0.4)
 
 model.bake()
 
-
+states = np.array([s.name for s in model.states])
 print('{} states: {}'.format(
     model.node_count(),
-    [s.name for s in model.states]
+    states
     ))
+transitions = model.dense_transition_matrix()
+
 print('{} transitions probabilities between states \n{}'.format(
     model.edge_count(),
-    model.dense_transition_matrix()
+    transitions
     ))
