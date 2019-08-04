@@ -9,15 +9,10 @@ def pair_counts(sequences_A, sequences_B):
     that counts the number of occurrences of the corresponding value from the
     second sequences list.
     """
-    pair_cnts = {tag:{} for tag in sequences_A}
+    pair_cnts = {tag:defaultdict(int) for tag in sequences_A}
     
     for i in range(len(sequences_A)):
-        try:
-            pair_cnts[sequences_A[i]][sequences_B[i]]
-        except KeyError:
-            pair_cnts[sequences_A[i]][sequences_B[i]] = 0
-        finally:
-            pair_cnts[sequences_A[i]][sequences_B[i]] += 1
+        pair_cnts[sequences_A[i]][sequences_B[i]] += 1
     
     return pair_cnts
 
@@ -67,14 +62,11 @@ def unigram_counts(sequences):
     counts the number of occurrences of the value in the sequences list. The sequences
     collection should be a 2-dimensional array.
     """
-    unigrams = {}
+    unigrams = defaultdict(int)
     
     for sequence in sequences:
         for item in sequence:
-            try:
-                unigrams[item] += 1
-            except KeyError:
-                unigrams[item] = 1
+            unigrams[item] += 1
     
     return unigrams
 
@@ -85,14 +77,11 @@ def bigram_counts(sequences):
     should be a 2-dimensional array.
     """
 
-    bigrams = {}
+    bigrams = defaultdict(int)
     
     for sequence in sequences:
         for i in range(len(sequence)-1):
-            try:
-                bigrams[(sequence[i],sequence[i+1])] += 1
-            except KeyError:
-                bigrams[(sequence[i],sequence[i+1])] = 1
+            bigrams[(sequence[i],sequence[i+1])] += 1
                 
     return bigrams
 
@@ -102,13 +91,10 @@ def starting_counts(sequences):
     that counts the number of occurrences where that value is at the beginning of
     a sequence.
     """
-    startings = {}
+    startings = defaultdict(int)
     
     for sequence in sequences:
-        try:
-            startings[sequence[0]] += 1
-        except KeyError:
-            startings[sequence[0]] = 1
+        startings[sequence[0]] += 1
             
     return startings
 
@@ -118,14 +104,10 @@ def ending_counts(sequences):
     that counts the number of occurrences where that value is at the end of
     a sequence.
     """
-    endings = {}
+    endings = defaultdict(int)
     
     for sequence in sequences:
-        
-        try:
-            endings[sequence[-1]] += 1
-        except KeyError:
-            endings[sequence[-1]] = 1
+        endings[sequence[-1]] += 1
     
     return endings
 
